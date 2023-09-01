@@ -1,6 +1,6 @@
 # app_music
 
-A new Flutter project. App UI/UX.
+A new Flutter project.
 
 ## Getting Started
 
