@@ -5,5 +5,6 @@ import 'intro.dart';
 void main() {
   runApp(MaterialApp(
     home: Intro(),
+    debugShowCheckedModeBanner: false,
   ));
 }

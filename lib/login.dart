@@ -24,8 +24,9 @@ class Login extends StatelessWidget {
                   style: TextStyle(
                       color: Colors.black54,
                       fontFamily: 'Poppins',
-                      fontWeight: FontWeight.w900,
-                      fontSize: 16
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      letterSpacing: 2
                   ),
                 )
               ),
@@ -67,6 +68,7 @@ class Login extends StatelessWidget {
                             color: Color(0xffafafaf)
                           ),
                         ),
+                        suffixIcon: Icon(Icons.remove_red_eye),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30),
                           borderSide: BorderSide(
@@ -142,7 +144,7 @@ class Login extends StatelessWidget {
                 ),
               ),
               SizedBox(
-                height: 40,
+                height: 60,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -161,7 +163,19 @@ class Login extends StatelessWidget {
                         ),
                         borderRadius: BorderRadius.circular(30)
                     ),
-                    child: ElevatedButton(
+                    child: ElevatedButton.icon(
+                      /*icon: Icon(Icons.home,
+                          color: Colors.green,
+                          size: 25
+                      ),*/
+                      icon: Image.asset('imgs/google.png'),
+                      label: Text(" Google ",
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'Poppins',
+                            fontSize: 14,
+                        ),
+                      ),
                       onPressed: (){
                         Navigator.push(
                             context,
@@ -170,7 +184,7 @@ class Login extends StatelessWidget {
                             )
                         );
                       },
-                      child: Padding(
+                      /*child: Padding(
                         padding: const EdgeInsets.fromLTRB(35, 9, 35, 9),
                         child: Text("Google",
                           style: TextStyle(
@@ -179,8 +193,11 @@ class Login extends StatelessWidget {
                               fontSize: 12
                           ),
                         ),
-                      ),
+                      ),*/
                       style: ButtonStyle(
+                        padding: MaterialStateProperty.all(
+                          EdgeInsets.fromLTRB(10, 0, 30, 0)
+                        ),
                           backgroundColor: MaterialStateProperty.all<Color>(
                               Colors.white
                           ),
@@ -216,7 +233,15 @@ class Login extends StatelessWidget {
                         ),
                         borderRadius: BorderRadius.circular(30)
                     ),
-                    child: ElevatedButton(
+                    child: ElevatedButton.icon(
+                      icon: Image.asset('imgs/face.png'),
+                      label: Text("Facebook",
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'Poppins',
+                            fontSize: 14
+                        ),
+                      ),
                       onPressed: (){
                         Navigator.push(
                             context,
@@ -225,7 +250,7 @@ class Login extends StatelessWidget {
                             )
                         );
                       },
-                      child: Padding(
+                      /*child: Padding(
                         padding: const EdgeInsets.fromLTRB(30, 9, 30, 9),
                         child: Text("Facebook",
                           style: TextStyle(
@@ -234,7 +259,7 @@ class Login extends StatelessWidget {
                               fontSize: 12
                           ),
                         ),
-                      ),
+                      ),*/
                       style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all<Color>(
                               Colors.white
@@ -257,12 +282,15 @@ class Login extends StatelessWidget {
                   ),
                 ],
               ),
+              SizedBox(
+                height: 100,
+              ),
               Expanded(
                 child: Container(
                   width: 80,
                   child: Divider(
                     color: Colors.black54,
-                    thickness: 2,
+                    thickness: 1,
                   ),
                 ),
               ),
@@ -270,10 +298,22 @@ class Login extends StatelessWidget {
                 padding: EdgeInsets.all(0),
                 child: GestureDetector(
                   onTap: (){},
-                  child: Text("Lost Password?",
-                    style: TextStyle(
-                      fontFamily: 'Poppins',
-                    ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("Don't have an account?",
+                        style: TextStyle(
+                          fontFamily: 'Poppins',
+                        ),
+                      ),
+                      Text(" Register",
+                        style: TextStyle(
+                          fontFamily: 'Poppins',
+                          fontWeight: FontWeight.bold
+                          )
+                        ),
+                    ],
                   ),
                 ),
               ),
