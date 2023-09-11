@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'cadastro.dart';
+import 'home.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -125,7 +126,7 @@ class _LoginState extends State<Login> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => Login(),
+                              builder: (context) => Home(),
                             )
                         );
                       },

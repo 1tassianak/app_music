@@ -1,9 +1,37 @@
+import 'package:app_music/home.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter/services.dart';
+import 'cadastro.dart';
 import 'login.dart';
+import 'package:local_auth/local_auth.dart';
 
-class Intro extends StatelessWidget {
+class Intro extends StatefulWidget {
   const Intro({super.key});
+
+  @override
+  State<Intro> createState() => _IntroState();
+}
+
+class _IntroState extends State<Intro> {
+
+  Future<void> _authenticate() async{
+    final localAuth = LocalAuthentication();
+    try{
+      final isAuthenticated = await localAuth.authenticate(
+          localizedReason: "Faça login com biometria",
+      );
+
+      if (isAuthenticated){
+        Navigator.of(context).push(
+            MaterialPageRoute(
+                builder: (context) => Home(),
+            ),
+        );
+      }
+    }catch (e){
+      print(e.toString());
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +111,14 @@ class Intro extends StatelessWidget {
               Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: ElevatedButton(
-                    onPressed: (){},
+                    onPressed: (){
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Cadastro(),
+                          )
+                      );
+                    },
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(60, 12, 60, 12),
                       child: Text("Register",
@@ -119,6 +154,24 @@ class Intro extends StatelessWidget {
                     )*/
                   )
               ),
+              Padding(
+                padding: EdgeInsets.only(top: 40, bottom: 40),
+                child: Text("Or quick login\n with Touch ID",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontFamily: 'Poppins',
+                      fontSize: 14
+                  ),
+                ),
+              ),
+              GestureDetector(
+                onTap: _authenticate,
+                child: SizedBox(
+                  width: 300,
+                  height: 100,
+                  child: Image.asset("imgs/biometria.png"),
+                ),
+              )
             ],
           ),
         )
