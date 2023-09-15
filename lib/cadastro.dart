@@ -13,6 +13,8 @@ class _CadastroState extends State<Cadastro> {
   bool obscureText = true;
   IconData icon = Icons.remove_red_eye;
 
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -47,12 +47,10 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
-	<key>NSFaceIDUsageDescription</key>
-    <string>Why is my app authenticating using face id?</string>
     <key>NSCameraUsageDescription</key>
-    <string>Explanation on why the camera access is needed.</string>
+    <string>Can I use the camera please?</string>
     <key>NSMicrophoneUsageDescription</key>
-    <string>Explanation on why the microphone access is needed.</string>
+    <string>Can I use the mic please?</string>
 
 </dict>
 </plist>
