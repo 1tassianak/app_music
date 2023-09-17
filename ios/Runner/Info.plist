@@ -48,9 +48,9 @@
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
     <key>NSCameraUsageDescription</key>
-    <string>Can I use the camera please?</string>
-    <key>NSMicrophoneUsageDescription</key>
-    <string>Can I use the mic please?</string>
+    <string>Utilizar a câmera para tirar foto.</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>Permitir que o usuário utilize fotos da galeria.</string>
 
 </dict>
 </plist>
