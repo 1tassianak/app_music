@@ -24,7 +24,7 @@ class _LoginState extends State<Login> {
           child: SizedBox(
             height: MediaQuery.of(context).size.height,
             child: Container(
-              padding: const EdgeInsets.fromLTRB(8, 80, 8, 80),
+              padding: const EdgeInsets.fromLTRB(8, 60, 8, 50),
               alignment: Alignment.center,
               child: Column(
                 children: [
