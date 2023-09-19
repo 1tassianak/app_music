@@ -66,12 +66,18 @@ class _IntroState extends State<Intro> {
                   padding: const EdgeInsets.all(8.0),
                   child: ElevatedButton(
                     onPressed: (){
-                      Navigator.push(
+
+                      //Rota normal
+                      /*Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => Login(),
                           )
-                      );
+                      );*/
+
+                      //Chamando a rota nomeada do Login()
+                      Navigator.of(context).pushNamed('/login');
+
                     },
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(50, 12, 50, 12),
