@@ -58,7 +58,7 @@ Este app possui as seguintes funcionalidades a serem desenvolvidas:
 
 &nbsp;
 > [!WARNING]  
-> <img height="200" src="http://stfuhero.com.s3-website-us-west-2.amazonaws.com/604311932c896.png">
+> <img height="200" src="https://imgur.com/LTsgBAD">
 &nbsp;
 
 ## :vibration_mode: Como executar/importar o projeto
