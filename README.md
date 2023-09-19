@@ -58,9 +58,13 @@ Este app possui as seguintes funcionalidades a serem desenvolvidas:
 
 ## :vibration_mode: Como executar/importar o projeto
 
+<img src="http://stfuhero.com.s3-website-us-west-2.amazonaws.com/604311932c896.png">
+
 - Certifique-se de que o Flutter esteja na versão 3.10.1 e o Dart na versão 3.0.1;
 - Importe o projeto para sua IDE de preferência (eu estou utilizando o Android Studio Giraffe | 2022.3.1 Patch 1);
   - Certifique-se de que a IDE esteja com os plugins Flutter e Dart instalados nas versões citadas acima;
 - Vá em `File > Settings > Languages & Frameworks > Flutter` e insira o caminho da pasta do SDK do Flutter em `Flutter SDK path`;
 - Abra o arquivo `pubspec.yaml` e clique em `pub get` para que as dependências (pacotes) utilizadas no projeto sejam carregadas;
 - Execute a aplicação.
+
+<img src="https://procoders.tech/wp-content/webp-express/webp-images/doc-root/wp-content/uploads/2021/05/1_J9_05FyiiDk2y2hhbOwNlg.png.webp" >
