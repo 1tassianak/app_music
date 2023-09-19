@@ -6,7 +6,8 @@
 	🚧 Em construção... 🚧
 </h4>
 
-Este aplicativo está sendo desenvolvido para estudo e exemplificação de desenvolvimento com Flutter/Dart. Vale ressaltar que este app não é para ser utilizado para fins comerciais.
+> [!NOTE]
+>Este aplicativo está sendo desenvolvido para estudo e exemplificação de desenvolvimento com Flutter/Dart. Vale ressaltar que este app não é para ser utilizado para fins comerciais.
 
 O front do aplicativo foi feito a partir de um mockup, escolhido na internet por sua beleza e disposição de elementos, sem se preocupar com sua temática.
 O desafio é desenvolver um app fiel à prototipação e dar continuidade de acordo com seu escopo.
@@ -51,9 +52,6 @@ Este app possui as seguintes funcionalidades a serem desenvolvidas:
 - Ouvir a música;
 - Pausar;
 - Favoritar;
-
-
-
 
 ## :vibration_mode: Como executar/importar o projeto
 
