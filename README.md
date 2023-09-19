@@ -15,29 +15,29 @@ Para as telas das quais não estão contempladas no mockup, buscou-se utilizar o
 
 Este app possui as seguintes funcionalidades a serem desenvolvidas:
 
-##Tela Introdutória:
+## Tela Introdutória:
 - Login;
 - Cadastrar-se;
 - Login rápido (por biometria).
 
-##Tela de Login:
+## Tela de Login:
 - Fazer login com e-mail e senha;
 - Fazer login com a conta do Google
 - Fazer login com a conta do Facebook;
 - Cadastrar-se.
 
-##Tela de Cadastro:
+## Tela de Cadastro:
 - Fazer cadastro utilizando dados pessoais;
 - Tirar foto para o perfil com a câmera;
 - Escolher foto da galeria para inserir no perfil;
 - Remover foto do perfil.
 
-##Tela Home:
+## Tela Home:
 - Listagem de músicas;
 - Favoritar músicas;
 - Ouvir músicas;
 
-##Menu Drawer:
+## Menu Drawer:
 - Ver/ouvir músicas favoritas/curtidas;
 - Ver/ouvir músicas de playlists criadas;
 
