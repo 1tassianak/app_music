@@ -55,6 +55,7 @@ Este app possui as seguintes funcionalidades a serem desenvolvidas:
 - Pausar;
 - Favoritar;
 
+
 &nbsp;
 > [!WARNING]
 > <img height="200" src="https://i.imgur.com/LTsgBAD.jpg">
