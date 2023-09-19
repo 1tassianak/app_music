@@ -60,7 +60,7 @@ Este app possui as seguintes funcionalidades a serem desenvolvidas:
 <p align="center">
 
 > [!WARNING]
-> 
+> &nbsp;
 
 <img height="200" src="https://i.imgur.com/LTsgBAD.jpg">
 </p>
