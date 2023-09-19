@@ -57,8 +57,6 @@ Este app possui as seguintes funcionalidades a serem desenvolvidas:
 
 
 &nbsp;
-> [!WARNING]  
-> <img height="200" src="https://i.imgur.com/LTsgBAD.jpg">
 &nbsp;
 
 ## :vibration_mode: Como executar/importar o projeto
