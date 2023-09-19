@@ -67,4 +67,5 @@ Este app possui as seguintes funcionalidades a serem desenvolvidas:
 - Abra o arquivo `pubspec.yaml` e clique em `pub get` para que as dependências (pacotes) utilizadas no projeto sejam carregadas;
 - Execute a aplicação.
 
-<img src="https://procoders.tech/wp-content/webp-express/webp-images/doc-root/wp-content/uploads/2021/05/1_J9_05FyiiDk2y2hhbOwNlg.png.webp" >
+<img src="https://img-9gag-fun.9cache.com/photo/arox7VX_700bwp.webp" >
+<img src="https://procoders.tech/wp-content/uploads/2021/07/ezgif-6-de2ce476aefa.webp">
