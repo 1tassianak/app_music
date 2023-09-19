@@ -52,6 +52,9 @@ Este app possui as seguintes funcionalidades a serem desenvolvidas:
 - Pausar;
 - Favoritar;
 
+
+
+
 ## :vibration_mode: Como executar/importar o projeto
 
 - Certifique-se de que o Flutter esteja na versão 3.10.1 e o Dart na versão 3.0.1;
