@@ -24,35 +24,117 @@ class Home extends StatelessWidget {
       ),
       drawer: Drawer(
         child: ListView(
-          children: ListTile.divideTiles(
-              context: context,
-                tiles: [
-                  ListTile(
-                    leading: Icon(Icons.favorite),
-                    title: Text("Músicas Curtidas"),
-                    onTap: (){
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => Favoritos(),
-                        ),
-                      );
-                    },
+          children: [
+            UserAccountsDrawerHeader(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                  end: Alignment(0.8, 1),
+                  colors: [
+                    const Color(0xFF02d9de),
+                    const Color(0xFF905ef1),
+                    const Color(0xFFf902ff),
+                  ],
+                  tileMode: TileMode.mirror,
+                ),
+              ),
+              currentAccountPicture: CircleAvatar(
+                  backgroundImage: NetworkImage("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRws9oxLyyfsQvFEfFtPJBejfbUouxcMLVNHg&usqp=CAU")
+              ) ,
+              accountName: Text("User",
+                style: TextStyle(
+                  fontFamily: 'Poppins',
+                ),
+              ),
+              accountEmail: Text("user@gmail.com",
+                style: TextStyle(
+                  fontFamily: 'Poppins',
+                ),
+              ),
+            ),
+            ListTile(
+              leading: ShaderMask( //Shader só funciona quando o Child possuir cor branca
+                  shaderCallback: (Rect bounds) => LinearGradient(
+                    colors: [
+                      const Color(0xFF02d9de),
+                      const Color(0xFF905ef1),
+                      const Color(0xFFf902ff),
+                    ],
+                    tileMode: TileMode.mirror,
+                  ).createShader(bounds),
+                  child: Icon(
+                    Icons.favorite,
+                    color: Colors.white,
+                  )
+              ),
+              title: Text("Músicas Curtidas",
+                style: TextStyle(
+                  fontFamily: 'Poppins',
+                ),
+              ),
+              onTap: (){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Favoritos(),
                   ),
-                  ListTile(
-                    leading: Icon(Icons.music_note),
-                    title: Text("Playlist"),
-                    onTap: (){
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => Home(),
-                        ),
-                      );
-                    },
+                );
+              },
+            ),
+            Container(
+              height: 2,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    colors: [
+                      const Color(0xFF02d9de),
+                      const Color(0xFF905ef1),
+                      const Color(0xFFf902ff),
+                    ]
+                ),
+              ),
+            ),
+            ListTile(
+              leading: ShaderMask( //Shader só funciona quando o Child possuir cor branca
+                  shaderCallback: (Rect bounds) => LinearGradient(
+                    colors: [
+                      const Color(0xFF02d9de),
+                      const Color(0xFF905ef1),
+                      const Color(0xFFf902ff),
+                    ],
+                    tileMode: TileMode.mirror,
+                  ).createShader(bounds),
+                  child: Icon(
+                    Icons.music_note,
+                    color: Colors.white,
+                  )
+              ),
+              title: Text("Playlist",
+                style: TextStyle(
+                  fontFamily: 'Poppins',
+                ),
+              ),
+              onTap: (){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Home(),
                   ),
-                ]
-            ).toList(),
+                );
+              },
+            ),
+            Container(
+              height: 2,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    colors: [
+                      const Color(0xFF02d9de),
+                      const Color(0xFF905ef1),
+                      const Color(0xFFf902ff),
+                    ]
+                ),
+              ),
+            ),
+          ],
         )
       ),
       body: ListView(
