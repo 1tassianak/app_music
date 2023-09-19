@@ -58,7 +58,7 @@ Este app possui as seguintes funcionalidades a serem desenvolvidas:
 
 ## :vibration_mode: Como executar/importar o projeto
 
-<img height="200" src="http://stfuhero.com.s3-website-us-west-2.amazonaws.com/604311932c896.png">
+<p align="center"><img height="200" src="http://stfuhero.com.s3-website-us-west-2.amazonaws.com/604311932c896.png"></p>
 
 - Certifique-se de que o Flutter esteja na versão 3.10.1 e o Dart na versão 3.0.1;
 - Importe o projeto para sua IDE de preferência (eu estou utilizando o Android Studio Giraffe | 2022.3.1 Patch 1);
@@ -67,5 +67,5 @@ Este app possui as seguintes funcionalidades a serem desenvolvidas:
 - Abra o arquivo `pubspec.yaml` e clique em `pub get` para que as dependências (pacotes) utilizadas no projeto sejam carregadas;
 - Execute a aplicação.
 
-<img height="200" src="https://img-9gag-fun.9cache.com/photo/arox7VX_700bwp.webp" >
-<img height="200" src="https://procoders.tech/wp-content/uploads/2021/07/ezgif-6-de2ce476aefa.webp">
+<p align="center"><img height="200" src="https://img-9gag-fun.9cache.com/photo/arox7VX_700bwp.webp" ></p>
+<p align="center"><img height="200" src="https://procoders.tech/wp-content/uploads/2021/07/ezgif-6-de2ce476aefa.webp"></p>
