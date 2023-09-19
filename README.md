@@ -47,6 +47,11 @@ Este app possui as seguintes funcionalidades a serem desenvolvidas:
 - Ver/ouvir músicas favoritas/curtidas;
 - Ver/ouvir músicas de playlists criadas;
 
+## Telas individuais de cada música:
+- Ouvir a música;
+- Pausar;
+- Favoritar;
+
 ## :vibration_mode: Como executar/importar o projeto
 
 - Certifique-se de que o Flutter esteja na versão 3.10.1 e o Dart na versão 3.0.1;
