@@ -1,16 +1,44 @@
-# app_music
+<h1 align="center">APP MUSIC </h1>
 
-A new Flutter project.
+Este aplicativo está sendo desenvolvido para estudo e exemplificação de desenvolvimento com Flutter/Dart. Vale ressaltar que este app não é para ser utilizado para fins comerciais.
 
-## Getting Started
+O front do aplicativo foi feito a partir de um mockup, escolhido na internet por sua beleza e disposição de elementos, sem se preocupar com sua temática.
+O desafio é desenvolver um app fiel à prototipação e dar continuidade de acordo com seu escopo.
+A ideia é mostrar e ensinar que qualquer pessoa é capaz de desenvolver a partir de qualquer design, o que nos limita é nosso conhecimento.
 
-This project is a starting point for a Flutter application.
+O escopo é uma aplicação para ouvir música, cujo mockup é de autoria do designer <a href="https://www.petermocanu.com/login-form-ui-design/"  target="_blank"> Peter Mocanu </a>:
+<h1 align="center">
+    <img alt="App Music" title="#AppMusic" src="/imgs/login-form-UI-mobile-concept-v2.jpg" />
+</h1>
 
-A few resources to get you started if this is your first Flutter project:
+Para as telas das quais não estão contempladas no mockup, buscou-se utilizar os mesmos elementos e colorações, para manter o padrão do mockup.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Este app possui as seguintes funcionalidades a serem desenvolvidas:
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+##Tela Introdutória:
+- Login;
+- Cadastrar-se;
+- Login rápido (por biometria).
+
+##Tela de Login:
+- Fazer login com e-mail e senha;
+- Fazer login com a conta do Google
+- Fazer login com a conta do Facebook;
+- Cadastrar-se.
+
+##Tela de Cadastro:
+- Fazer cadastro utilizando dados pessoais;
+- Tirar foto para o perfil com a câmera;
+- Escolher foto da galeria para inserir no perfil;
+- Remover foto do perfil.
+
+##Tela Home:
+- Listagem de músicas;
+- Favoritar músicas;
+- Ouvir músicas;
+
+##Menu Drawer:
+- Ver/ouvir músicas favoritas/curtidas;
+- Ver/ouvir músicas de playlists criadas;
+
+
