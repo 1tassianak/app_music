@@ -2,6 +2,8 @@
 <img width="32" height="32" src="https://img.icons8.com/color/48/flutter.png" alt="flutter"/> APP MUSIC 🎶
 </h1>
 
+<p align="center"> <img height="200" src="https://img.ifunny.co/images/54a68ae766a6646bdf800c548cdb717731f3ee4ceaf4f617668f6cef28dc5f81_1.webp"></p>
+
 <h4 align="center"> 
 	🚧 Em construção... 🚧
 </h4>
