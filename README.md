@@ -1,5 +1,9 @@
 <h1 align="center">APP MUSIC </h1>
 
+<h4 align="center"> 
+	🚧 Em construção... 🚧
+</h4>
+
 Este aplicativo está sendo desenvolvido para estudo e exemplificação de desenvolvimento com Flutter/Dart. Vale ressaltar que este app não é para ser utilizado para fins comerciais.
 
 O front do aplicativo foi feito a partir de um mockup, escolhido na internet por sua beleza e disposição de elementos, sem se preocupar com sua temática.
@@ -41,4 +45,11 @@ Este app possui as seguintes funcionalidades a serem desenvolvidas:
 - Ver/ouvir músicas favoritas/curtidas;
 - Ver/ouvir músicas de playlists criadas;
 
+## Como executar/importar o projeto
 
+- Certifique-se de que o Flutter esteja na versão 3.10.1 e o Dart na versão 3.0.1;
+- Importe o projeto para sua IDE de preferência (eu estou utilizando o Android Studio Giraffe | 2022.3.1 Patch 1);
+  - Certifique-se de que a IDE esteja com os plugins Flutter e Dart instalados nas versões citadas acima;
+- Vá em `File > Settings > Languages & Frameworks > Flutter` e insira o caminho da pasta do SDK do Flutter em `Flutter SDK path`;
+- Abra o arquivo `pubspec.yaml` e clique em `pub get` para que as dependências (pacotes) utilizadas no projeto sejam carregadas;
+- Execute a aplicação.
