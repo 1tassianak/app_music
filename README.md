@@ -1,5 +1,5 @@
 <h1 align="center">
-<img src="https://w7.pngwing.com/pngs/537/866/png-transparent-flutter-hd-logo.png" /> APP MUSIC 🎶
+<img width="48" height="48" src="https://img.icons8.com/color/48/flutter.png" alt="flutter"/> APP MUSIC 🎶
 </h1>
 
 <h4 align="center"> 
