@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'cadastro.dart';
@@ -12,10 +13,39 @@ class Login extends StatefulWidget {
 
 class _LoginState extends State<Login> {
 
+  //Instancie o FirebaseAuth
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  String _email = '';
+  String _password = '';
+
+  Future<void> _login() async{
+    try{
+      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+          email: _email,
+          password: _password,
+      );
+
+      //Utilize Navigator.push para ir para a tela desejada após o login
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Home(),
+          )
+      );
+    } on FirebaseAuthException catch(e){
+      if (e.code == 'user-not-found'){
+        print("Não foi encontrado usuário para este e-mail.");
+      } else if(e.code == 'wrong-password'){
+        print("Senha icorreta.");
+      } else {
+        print("Error: $e");
+      }
+    }
+  }
+
   bool obscureText = true;
   IconData icon = Icons.remove_red_eye;
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -88,15 +118,12 @@ class _LoginState extends State<Login> {
                             suffixIcon: IconButton(
                               icon: Icon(icon),
                               onPressed: (){
-                                if(obscureText == true){
-                                  setState(() {
-                                    obscureText = false;
-                                  });
-                                }else{
-                                  setState(() {
-                                    obscureText = true;
-                                  });
-                                }
+                                setState(() {
+                                  //altera o valor de obscureText para seu oposto, se era true, ficará false e vice-versa
+                                  obscureText = !obscureText;
+                                  //icon será atualizado com base no valor de obscureText
+                                  icon = obscureText ? Icons.remove_red_eye : Icons.visibility_off;
+                                });
                               },
                             ),
                             border: OutlineInputBorder(
@@ -109,6 +136,11 @@ class _LoginState extends State<Login> {
                             filled: true,
                             fillColor: Color(0xffe5e5e5)
                         ),
+                        //chamamos onChanged quando um conteúdo de um campo TextField é alterado
+                        onChanged: (value){
+                          //value é o valor digitado pelo usuário, e será atribuído à _password
+                          _password = value;
+                        },
                       ),
                     ),
                   ),
@@ -124,14 +156,7 @@ class _LoginState extends State<Login> {
                       borderRadius: BorderRadius.circular(30)
                     ),
                     child: ElevatedButton(
-                      onPressed: (){
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => Home(),
-                            )
-                        );
-                      },
+                      onPressed: _login,
                       child: Padding(
                         padding: const EdgeInsets.fromLTRB(55, 8, 55, 8),
                         child: Text("Login",

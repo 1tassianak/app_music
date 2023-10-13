@@ -1,8 +1,12 @@
 import 'dart:io';
-
-import 'package:app_music/login.dart';
+import 'package:app_music/usuario.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+
+import 'home.dart';
 
 class Cadastro extends StatefulWidget {
   const Cadastro({super.key});
@@ -13,11 +17,17 @@ class Cadastro extends StatefulWidget {
 
 class _CadastroState extends State<Cadastro> {
 
+  String _email = '';
+  String _password = '';
+  String _nome = '';
+
   bool obscureText = true;
   IconData icon = Icons.remove_red_eye;
 
   final imagePicker = ImagePicker();
   File? imageFile;
+
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   pick(ImageSource source) async{
     final pickedFile = await imagePicker.pickImage(source: source);
@@ -26,6 +36,71 @@ class _CadastroState extends State<Cadastro> {
       setState(() {
         imageFile = File(pickedFile.path);
       });
+    }
+  }
+
+  // Função para salvar o usuário no Firestore
+  Future<void> saveUsuarioToFirestore(Usuario usuario) async {
+    try {
+      await FirebaseFirestore.instance.collection('usuarios').doc(usuario.email).set({
+        'nome': usuario.nome,
+        'email': usuario.email,
+        'senha': usuario.senha,
+        'imageUrl': usuario.imageUrl,
+      });
+    } catch (e) {
+      print('Erro ao salvar o usuário no Firestore: $e');
+      // Trate o erro de acordo com suas necessidades
+    }
+  }
+
+  Future<void> _register() async{
+    String imageUrl = '';
+    try{
+      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+          email: _email,
+          password: _password,
+      );
+
+      //upload da imagem para o Firebase Storage
+      if(imageFile != null){
+        Reference storageReference = FirebaseStorage.instance.ref().child('profile_images/${userCredential.user!.uid}');
+        UploadTask uploadTask = storageReference.putFile(imageFile!);
+
+        // Aguarde o upload ser concluído
+        TaskSnapshot snapshot = await uploadTask;
+
+        // Obtenha a URL da imagem após o upload
+        imageUrl = await snapshot.ref.getDownloadURL();
+
+        await uploadTask.whenComplete(() async{
+          String imageURL = await storageReference.getDownloadURL();
+          //Salva a URL da imagem junto com os outros dados do usuário
+          await userCredential.user!.updatePhotoURL(imageURL);
+          await userCredential.user!.reload();
+        });
+      }
+
+      //Cria o objeto Usuario com os dados
+      Usuario usuario = Usuario(
+        nome: _nome,
+        email: _email,
+        senha: _password,
+        imageUrl: imageUrl
+      );
+      // Salva o usuário no Firestore
+      await saveUsuarioToFirestore(usuario);
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => Home()),
+      );
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'email-already-in-use') {
+        print('The account already exists for that email.');
+      } else {
+        print('Error: $e');
+      }
     }
   }
 
@@ -236,14 +311,7 @@ class _CadastroState extends State<Cadastro> {
                       borderRadius: BorderRadius.circular(30)
                   ),
                   child: ElevatedButton(
-                    onPressed: (){
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => Login(),
-                          )
-                      );
-                    },
+                    onPressed: _register,
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(55, 8, 55, 8),
                       child: Text("Cadastrar",

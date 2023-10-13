@@ -31,7 +31,7 @@ Este app possui as seguintes funcionalidades a serem desenvolvidas:
 
 ## Tela de Login:
 - Fazer login com e-mail e senha;
-- Fazer login com a conta do Google
+- Fazer login com a conta do Google;
 - Fazer login com a conta do Facebook;
 - Cadastrar-se.
 
