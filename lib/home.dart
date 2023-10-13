@@ -1,4 +1,5 @@
 import 'package:app_music/musica_controller.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'favoritos.dart';
@@ -13,9 +14,36 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
 
   var controller = MusicaController();
+  String userName = '';
+  String userEmail = '';
+
+  @override
+  void initState() {
+    super.initState();
+    // Atualiza o nome e e-mail do usuário ao iniciar a tela Home
+    updateUserDetails();
+  }
+
+  Future<void> updateUserDetails() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      setState(() {
+        userName = user.displayName ?? '';
+        userEmail = user.email ?? '';
+
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+
+    String userImageUrl = '';
+
+    if (FirebaseAuth.instance.currentUser != null) {
+      userImageUrl = FirebaseAuth.instance.currentUser!.photoURL ?? '';
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Home"),
@@ -48,14 +76,16 @@ class _HomeState extends State<Home> {
                 ),
               ),
               currentAccountPicture: CircleAvatar(
-                  backgroundImage: NetworkImage("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRws9oxLyyfsQvFEfFtPJBejfbUouxcMLVNHg&usqp=CAU")
-              ) ,
-              accountName: Text("User",
+                  backgroundImage: userImageUrl != 'noImage'
+                      ? NetworkImage(userImageUrl)
+                      : Image.asset('imgs/user.png') as ImageProvider, // placeholder de imagem
+              ),
+              accountName: Text(userName,
                 style: TextStyle(
                   fontFamily: 'Poppins',
                 ),
               ),
-              accountEmail: Text("user@gmail.com",
+              accountEmail: Text(userEmail,
                 style: TextStyle(
                   fontFamily: 'Poppins',
                 ),

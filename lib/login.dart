@@ -16,14 +16,18 @@ class _LoginState extends State<Login> {
   //Instancie o FirebaseAuth
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  String _email = '';
-  String _password = '';
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
 
   Future<void> _login() async{
+
+    String email = _emailController.text.trim();
+    String password = _passwordController.text;
+
     try{
       UserCredential userCredential = await _auth.signInWithEmailAndPassword(
-          email: _email,
-          password: _password,
+          email: email,
+          password: password,
       );
 
       //Utilize Navigator.push para ir para a tela desejada após o login
@@ -83,6 +87,7 @@ class _LoginState extends State<Login> {
                       width: 300,
                       height: 50,
                       child: TextField(
+                        controller: _emailController,
                         decoration: InputDecoration(
                           label: Text("E-mail",
                             style: TextStyle(
@@ -108,6 +113,7 @@ class _LoginState extends State<Login> {
                       width: 300,
                       height: 50,
                       child: TextField(
+                        controller: _passwordController,
                         obscureText: obscureText,
                         decoration: InputDecoration(
                             label: Text("Password",
@@ -136,11 +142,6 @@ class _LoginState extends State<Login> {
                             filled: true,
                             fillColor: Color(0xffe5e5e5)
                         ),
-                        //chamamos onChanged quando um conteúdo de um campo TextField é alterado
-                        onChanged: (value){
-                          //value é o valor digitado pelo usuário, e será atribuído à _password
-                          _password = value;
-                        },
                       ),
                     ),
                   ),

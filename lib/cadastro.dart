@@ -17,9 +17,20 @@ class Cadastro extends StatefulWidget {
 
 class _CadastroState extends State<Cadastro> {
 
-  String _email = '';
-  String _password = '';
-  String _nome = '';
+  final TextEditingController _nomeController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _password2Controller = TextEditingController();
+
+  //dispose() está sendo usada para liberar os recursos associados aos TextEditingControllers (gestão de memória)
+  @override
+  void dispose() {
+    _nomeController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+
+    super.dispose();
+  }
 
   bool obscureText = true;
   IconData icon = Icons.remove_red_eye;
@@ -54,12 +65,27 @@ class _CadastroState extends State<Cadastro> {
     }
   }
 
+  // Função para exibir uma mensagem se o e-mail já estiver em uso
+  void _showEmailAlreadyInUseMessage() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('O e-mail já está sendo usado por outra conta.'),
+        duration: Duration(seconds: 3), // Duração da mensagem
+      ),
+    );
+  }
+
   Future<void> _register() async{
+    String nome = _nomeController.text;
+    String email = _emailController.text;
+    String senha = _passwordController.text;
+    String senha2 = _password2Controller.text;
+
     String imageUrl = '';
     try{
       UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
-          email: _email,
-          password: _password,
+          email: email,
+          password: senha,
       );
 
       //upload da imagem para o Firebase Storage
@@ -77,19 +103,27 @@ class _CadastroState extends State<Cadastro> {
           String imageURL = await storageReference.getDownloadURL();
           //Salva a URL da imagem junto com os outros dados do usuário
           await userCredential.user!.updatePhotoURL(imageURL);
+
+          // Definir o nome do usuário (display name)
+          await userCredential.user!.updateDisplayName(nome);
+
+          // Recarregar o usuário para aplicar as alterações
           await userCredential.user!.reload();
         });
       }
 
       //Cria o objeto Usuario com os dados
       Usuario usuario = Usuario(
-        nome: _nome,
-        email: _email,
-        senha: _password,
+        nome: nome,
+        email: email,
+        senha: senha,
         imageUrl: imageUrl
       );
       // Salva o usuário no Firestore
       await saveUsuarioToFirestore(usuario);
+
+      // Após salvar o usuário, chame updateUserDetails para atualizar os detalhes do usuário na tela Home
+      updateUserDetails();
 
       Navigator.push(
         context,
@@ -98,10 +132,36 @@ class _CadastroState extends State<Cadastro> {
     } on FirebaseAuthException catch (e) {
       if (e.code == 'email-already-in-use') {
         print('The account already exists for that email.');
+        _showEmailAlreadyInUseMessage(); // Chama a função para exibir a mensagem
       } else {
         print('Error: $e');
       }
     }
+  }
+
+  Future<void> updateUserDetails() async {
+    User? user = FirebaseAuth.instance.currentUser;
+
+    if (user != null) {
+      setState(() {
+        // Atualiza o nome do usuário
+        _nomeController.text = user.displayName ?? '';
+
+        // Atualiza a imagem do perfil
+        if (user.photoURL != null && user.photoURL != '') {
+          imageFile = File(user.photoURL!);
+        }
+      });
+    }
+  }
+
+  void _showPasswordMismatchMessage() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('As senhas não conferem.'),
+        duration: Duration(seconds: 3), // Duração da mensagem
+      ),
+    );
   }
 
   @override
@@ -175,6 +235,7 @@ class _CadastroState extends State<Cadastro> {
                     width: 300,
                     height: 50,
                     child: TextField(
+                      controller: _nomeController,
                       decoration: InputDecoration(
                           label: Text("Name",
                             style: TextStyle(
@@ -200,6 +261,7 @@ class _CadastroState extends State<Cadastro> {
                     width: 300,
                     height: 50,
                     child: TextField(
+                      controller: _emailController,
                       decoration: InputDecoration(
                           label: Text("E-mail",
                             style: TextStyle(
@@ -256,6 +318,11 @@ class _CadastroState extends State<Cadastro> {
                           filled: true,
                           fillColor: Color(0xffe5e5e5)
                       ),
+                      onChanged: (value) {
+                        setState(() {
+                          _passwordController.text = value;
+                        });
+                      },
                     ),
                   ),
                 ),
@@ -296,6 +363,15 @@ class _CadastroState extends State<Cadastro> {
                           filled: true,
                           fillColor: Color(0xffe5e5e5)
                       ),
+                      onChanged: (value) {
+                        // Aqui você verifica se as senhas são iguais
+                        if (_password2Controller.text != value) {
+                          // Senhas não conferem, você pode mostrar uma mensagem
+                          // ou fazer algo apropriado ao seu aplicativo
+                          print("As senhas não conferem");
+                          _showPasswordMismatchMessage();
+                        }
+                      },
                     ),
                   ),
                 ),
@@ -421,6 +497,8 @@ class _CadastroState extends State<Cadastro> {
           );
         }
     );
+    // Após remover a imagem, chame updateUserDetails para atualizar os detalhes do usuário na tela Home
+    updateUserDetails();
   }
 
 }
