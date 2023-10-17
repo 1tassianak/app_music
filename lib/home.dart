@@ -1,7 +1,9 @@
 import 'package:app_music/musica_controller.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
+import 'editar_usuario.dart';
 import 'favoritos.dart';
 
 class Home extends StatefulWidget {
@@ -32,6 +34,17 @@ class _HomeState extends State<Home> {
         userEmail = user.email ?? '';
 
       });
+    }
+  }
+
+  Future<void> signOut() async {
+    try {
+      await FirebaseAuth.instance.signOut();
+      // Navegue para a tela de login ou qualquer outra tela de entrada do aplicativo
+      // Aqui, estamos navegando para a tela de login
+      Navigator.pushReplacementNamed(context, '/login');
+    } catch (e) {
+      print('Erro ao fazer logout: $e');
     }
   }
 
@@ -167,6 +180,105 @@ class _HomeState extends State<Home> {
                     ]
                 ),
               ),
+            ),
+            ListTile(
+              leading: ShaderMask( //Shader só funciona quando o Child possuir cor branca
+                  shaderCallback: (Rect bounds) => LinearGradient(
+                    colors: [
+                      const Color(0xFF02d9de),
+                      const Color(0xFF905ef1),
+                      const Color(0xFFf902ff),
+                    ],
+                    tileMode: TileMode.mirror,
+                  ).createShader(bounds),
+                  child: Icon(
+                    Icons.account_circle,
+                    color: Colors.white,
+                  )
+              ),
+              title: Text("Editar Perfil",
+                style: TextStyle(
+                  fontFamily: 'Poppins',
+                ),
+              ),
+              onTap: () {
+                /*Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => EditarUsuario()),
+                );*/
+              },
+            ),
+            Container(
+              height:2,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    colors: [
+                      const Color(0xFF02d9de),
+                      const Color(0xFF905ef1),
+                      const Color(0xFFf902ff),
+                    ]
+                ),
+              ),
+            ),
+            ListTile(
+              leading: ShaderMask( //Shader só funciona quando o Child possuir cor branca
+                  shaderCallback: (Rect bounds) => LinearGradient(
+                    colors: [
+                      const Color(0xFF02d9de),
+                      const Color(0xFF905ef1),
+                      const Color(0xFFf902ff),
+                    ],
+                    tileMode: TileMode.mirror,
+                  ).createShader(bounds),
+                  child: Icon(
+                    Icons.logout,
+                    color: Colors.white,
+                  )
+              ),
+              title: Text("Logoff",
+                style: TextStyle(
+                  fontFamily: 'Poppins',
+                ),
+              ),
+              onTap: () {
+                signOut(); // Chame a função para deslogar
+              },
+            ),
+            Container(
+              height:2,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    colors: [
+                      const Color(0xFF02d9de),
+                      const Color(0xFF905ef1),
+                      const Color(0xFFf902ff),
+                    ]
+                ),
+              ),
+            ),
+            ListTile(
+              leading: ShaderMask( //Shader só funciona quando o Child possuir cor branca
+                  shaderCallback: (Rect bounds) => LinearGradient(
+                    colors: [
+                      const Color(0xFF02d9de),
+                      const Color(0xFF905ef1),
+                      const Color(0xFFf902ff),
+                    ],
+                    tileMode: TileMode.mirror,
+                  ).createShader(bounds),
+                  child: Icon(
+                    Icons.exit_to_app,
+                    color: Colors.white,
+                  )
+              ),
+              title: Text("Sair",
+                style: TextStyle(
+                  fontFamily: 'Poppins',
+                ),
+              ),
+              onTap: () {
+                SystemNavigator.pop(); // Chame a função para deslogar
+              },
             ),
           ],
         )

@@ -8,15 +8,16 @@ import 'package:image_picker/image_picker.dart';
 
 import 'home.dart';
 
-class Cadastro extends StatefulWidget {
-  const Cadastro({super.key});
+class EditarUsuario extends StatefulWidget {
+  final Usuario usuario;
+
+  const EditarUsuario({required this.usuario, Key? key}) : super(key: key);
 
   @override
-  State<Cadastro> createState() => _CadastroState();
+  State<EditarUsuario> createState() => _EditarUsuarioState();
 }
 
-class _CadastroState extends State<Cadastro> {
-
+class _EditarUsuarioState extends State<EditarUsuario> {
   bool _passwordsMatch = true;
 
   final TextEditingController _nomeController = TextEditingController();
@@ -24,23 +25,12 @@ class _CadastroState extends State<Cadastro> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _password2Controller = TextEditingController();
 
-  //dispose() está sendo usada para liberar os recursos associados aos TextEditingControllers (gestão de memória)
-  @override
-  void dispose() {
-    _nomeController.dispose();
-    _emailController.dispose();
-    _passwordController.dispose();
-
-    super.dispose();
-  }
-
   bool obscureText = true;
   IconData icon = Icons.remove_red_eye;
 
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   final imagePicker = ImagePicker();
   File? imageFile;
-
-  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   pick(ImageSource source) async{
     final pickedFile = await imagePicker.pickImage(source: source);
@@ -52,95 +42,72 @@ class _CadastroState extends State<Cadastro> {
     }
   }
 
-  // Função para salvar o usuário no Firestore
-  Future<void> saveUsuarioToFirestore(Usuario usuario) async {
-    try {
-      await FirebaseFirestore.instance.collection('usuarios').doc(usuario.email).set({
-        'nome': usuario.nome,
-        'email': usuario.email,
-        'senha': usuario.senha,
-        'imageUrl': usuario.imageUrl,
-      });
-    } catch (e) {
-      print('Erro ao salvar o usuário no Firestore: $e');
-      // Trate o erro de acordo com suas necessidades
-    }
+  @override
+  void initState() {
+    super.initState();
+    _nomeController.text = widget.usuario.nome;
+    _emailController.text = widget.usuario.email;
+    // Você pode inicializar outros campos aqui se necessário
   }
 
-  // Função para exibir uma mensagem se o e-mail já estiver em uso
-  void _showEmailAlreadyInUseMessage() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('O e-mail já está sendo usado por outra conta.'),
-        duration: Duration(seconds: 3), // Duração da mensagem
-      ),
-    );
-  }
-
-  Future<void> _register() async{
+  Future<void> _editUser() async {
     String nome = _nomeController.text;
     String email = _emailController.text;
-    String senha = _passwordController.text;
-    String senha2 = _password2Controller.text;
 
-    String imageUrl = '';
-    try{
-      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+    // Restante do código para editar o usuário
+    try {
+      User? user = FirebaseAuth.instance.currentUser;
+
+      if (user != null) {
+        // Atualiza o nome do usuário
+        await user.updateDisplayName(nome);
+
+        // Atualiza a imagem de perfil, se houver uma nova imagem selecionada
+        if (imageFile != null) {
+          Reference storageReference =
+          FirebaseStorage.instance.ref().child('profile_images/${user.uid}');
+          UploadTask uploadTask = storageReference.putFile(imageFile!);
+
+          TaskSnapshot snapshot = await uploadTask;
+          String imageURL = await snapshot.ref.getDownloadURL();
+
+          // Atualiza a URL da imagem de perfil
+          await user.updatePhotoURL(imageURL);
+        }
+
+        // Atualiza outras informações do usuário conforme necessário
+        // ...
+
+        // Atualiza as informações no Firestore
+        Usuario usuarioAtualizado = Usuario(
+          nome: nome,
           email: email,
-          password: senha,
-      );
+          senha: widget.usuario.senha, // Mantenha a senha original
+          imageUrl: user.photoURL ?? '', // Mantenha a imagem original
+        );
 
-      //upload da imagem para o Firebase Storage
-      if(imageFile != null){
-        Reference storageReference = FirebaseStorage.instance.ref().child('profile_images/${userCredential.user!.uid}');
-        UploadTask uploadTask = storageReference.putFile(imageFile!);
-
-        // Aguarde o upload ser concluído
-        TaskSnapshot snapshot = await uploadTask;
-
-        // Obtenha a URL da imagem após o upload
-        imageUrl = await snapshot.ref.getDownloadURL();
-
-        await uploadTask.whenComplete(() async{
-          String imageURL = await storageReference.getDownloadURL();
-          //Salva a URL da imagem junto com os outros dados do usuário
-          await userCredential.user!.updatePhotoURL(imageURL);
-
-          // Definir o nome do usuário (display name)
-          await userCredential.user!.updateDisplayName(nome);
-
-          // Recarregar o usuário para aplicar as alterações
-          await userCredential.user!.reload();
+        await FirebaseFirestore.instance
+            .collection('usuarios')
+            .doc(user.email)
+            .update({
+          'nome': usuarioAtualizado.nome,
+          'email': usuarioAtualizado.email,
+          'senha': usuarioAtualizado.senha,
+          'imageUrl': usuarioAtualizado.imageUrl,
         });
-      } else {
-        // Se não houver imagem, apenas atualize o display name
-        await userCredential.user!.updateDisplayName(nome);
+
+        // Atualize os detalhes do usuário após a edição
+        updateUserDetails();
+
+        // Navegue de volta para a tela Home
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => Home()),
+        );
       }
-
-      //Cria o objeto Usuario com os dados
-      Usuario usuario = Usuario(
-        nome: nome,
-        email: email,
-        senha: senha,
-        imageUrl: imageUrl
-      );
-      // Salva o usuário no Firestore
-      await saveUsuarioToFirestore(usuario);
-
-      // Após salvar o usuário, chame updateUserDetails para atualizar os detalhes do usuário na tela Home
-      updateUserDetails();
-
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => Home()),
-      );
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'email-already-in-use') {
-        print('The account already exists for that email.');
-        _showEmailAlreadyInUseMessage(); // Chama a função para exibir a mensagem
-      } else {
-        print('Error: $e');
-      }
+    } catch (e) {
+      print('Erro ao editar o usuário: $e');
+      // Trate o erro de acordo com suas necessidades
     }
   }
 
@@ -190,10 +157,10 @@ class _CadastroState extends State<Cadastro> {
                                 borderRadius: BorderRadius.circular(105)
                             ),
                             child: CircleAvatar(
-                                radius: 110,
-                                backgroundColor: Colors.grey[300],
-                                backgroundImage: imageFile != null ? FileImage(imageFile!) : null,
-                              ),
+                              radius: 110,
+                              backgroundColor: Colors.grey[300],
+                              backgroundImage: imageFile != null ? FileImage(imageFile!) : null,
+                            ),
                           ),
                           Positioned(
                             bottom: 15,
@@ -214,7 +181,7 @@ class _CadastroState extends State<Cadastro> {
                     ),
                   ],
                 ),
-               /* Padding(
+                /* Padding(
                   padding: EdgeInsets.all(0),
                   child: CircleAvatar(
                     radius: 150,
@@ -330,34 +297,34 @@ class _CadastroState extends State<Cadastro> {
                     child: TextField(
                       obscureText: obscureText,
                       decoration: InputDecoration(
-                          label: Text("Repeat Password",
-                            style: TextStyle(
-                                color: Color(0xffafafaf)
-                            ),
+                        label: Text("Repeat Password",
+                          style: TextStyle(
+                              color: Color(0xffafafaf)
                           ),
-                          suffixIcon: IconButton(
-                            icon: Icon(icon),
-                            onPressed: (){
-                              if(obscureText == true){
-                                setState(() {
-                                  obscureText = false;
-                                });
-                              }else{
-                                setState(() {
-                                  obscureText = true;
-                                });
-                              }
-                            },
+                        ),
+                        suffixIcon: IconButton(
+                          icon: Icon(icon),
+                          onPressed: (){
+                            if(obscureText == true){
+                              setState(() {
+                                obscureText = false;
+                              });
+                            }else{
+                              setState(() {
+                                obscureText = true;
+                              });
+                            }
+                          },
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                          borderSide: BorderSide(
+                            width: 0,
+                            style: BorderStyle.none,
                           ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30),
-                            borderSide: BorderSide(
-                              width: 0,
-                              style: BorderStyle.none,
-                            ),
-                          ),
-                          filled: true,
-                          fillColor: Color(0xffe5e5e5),
+                        ),
+                        filled: true,
+                        fillColor: Color(0xffe5e5e5),
                         errorText: _passwordsMatch ? null : 'As senhas não conferem',
                       ),
                       onChanged: (value) {
@@ -381,7 +348,7 @@ class _CadastroState extends State<Cadastro> {
                       borderRadius: BorderRadius.circular(30)
                   ),
                   child: ElevatedButton(
-                    onPressed: _register,
+                    onPressed: _editUser,
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(55, 8, 55, 8),
                       child: Text("Cadastrar",
@@ -496,4 +463,3 @@ class _CadastroState extends State<Cadastro> {
   }
 
 }
-
