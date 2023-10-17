@@ -1,4 +1,5 @@
 import 'package:app_music/musica_controller.dart';
+import 'package:app_music/usuario.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -202,11 +203,14 @@ class _HomeState extends State<Home> {
                 ),
               ),
               onTap: () {
-                /*Navigator.push(
+                Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => EditarUsuario()),
-                );*/
+                  MaterialPageRoute(
+                    builder: (context) => EditarUsuario(usuario: Usuario(nome: userName, email: userEmail, senha: '')),
+                  ),
+                );
               },
+
             ),
             Container(
               height:2,

@@ -9,9 +9,9 @@ import 'package:image_picker/image_picker.dart';
 import 'home.dart';
 
 class EditarUsuario extends StatefulWidget {
-  final Usuario usuario;
+  final Usuario? usuario;
 
-  const EditarUsuario({required this.usuario, Key? key}) : super(key: key);
+  const EditarUsuario({this.usuario, Key? key}) : super(key: key);
 
   @override
   State<EditarUsuario> createState() => _EditarUsuarioState();
@@ -45,14 +45,14 @@ class _EditarUsuarioState extends State<EditarUsuario> {
   @override
   void initState() {
     super.initState();
-    _nomeController.text = widget.usuario.nome;
-    _emailController.text = widget.usuario.email;
-    // Você pode inicializar outros campos aqui se necessário
+    _nomeController.text = widget.usuario?.nome ?? '';
+    _emailController.text = widget.usuario?.email ?? '';
   }
 
   Future<void> _editUser() async {
     String nome = _nomeController.text;
     String email = _emailController.text;
+    String? senha = widget.usuario?.senha;
 
     // Restante do código para editar o usuário
     try {
@@ -82,7 +82,7 @@ class _EditarUsuarioState extends State<EditarUsuario> {
         Usuario usuarioAtualizado = Usuario(
           nome: nome,
           email: email,
-          senha: widget.usuario.senha, // Mantenha a senha original
+          senha: widget.usuario?.senha ?? '',// Use ?. to access potentially null properties
           imageUrl: user.photoURL ?? '', // Mantenha a imagem original
         );
 
@@ -107,7 +107,6 @@ class _EditarUsuarioState extends State<EditarUsuario> {
       }
     } catch (e) {
       print('Erro ao editar o usuário: $e');
-      // Trate o erro de acordo com suas necessidades
     }
   }
 
