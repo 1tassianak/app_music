@@ -350,7 +350,7 @@ class _EditarUsuarioState extends State<EditarUsuario> {
                     onPressed: _editUser,
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(55, 8, 55, 8),
-                      child: Text("Cadastrar",
+                      child: Text("Salvar",
                         style: TextStyle(
                             color: Colors.white,
                             fontFamily: 'Poppins',
