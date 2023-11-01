@@ -1,11 +1,14 @@
+import 'dart:convert';
+
 import 'package:app_music/musica_controller.dart';
 import 'package:app_music/usuario.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
+import 'package:http/http.dart' as http;
 import 'editar_usuario.dart';
 import 'favoritos.dart';
+import 'musica.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -23,9 +26,45 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
+
+    // Carregue as músicas do Deezer ao iniciar a tela Home
+    fetchDeezerMusic().then((musicas) {
+      setState(() {
+        // Atualize o estado com as músicas obtidas da API do Deezer
+        controller.musicas = musicas;
+      });
+    });
+
     // Atualiza o nome e e-mail do usuário ao iniciar a tela Home
     updateUserDetails();
   }
+
+
+  Future<List<Musica>> fetchDeezerMusic() async {
+    final apiKey = '62bafc9fd3msh512fa4a06235479p1f2109jsn501a7d4b1771';
+    final response = await http.get(
+      Uri.parse('https://deezerdevs-deezer.p.rapidapi.com/playlist/%7Bid%7D'), // Substitua PLAYLIST_ID pelo ID da playlist desejada
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      final List<dynamic> tracks = data['tracks']['data'];
+
+      List<Musica> musicas = tracks.map((track) => Musica(
+        nome: track['title'],
+        artista: track['artist']['name'],
+      )).toList();
+
+      return musicas;
+    } else {
+      throw Exception('Falha ao carregar músicas do Deezer');
+    }
+  }
+
 
   Future<void> updateUserDetails() async {
     User? user = FirebaseAuth.instance.currentUser;
@@ -296,7 +335,7 @@ class _HomeState extends State<Home> {
             return DividerGradient();
           }
 
-          final musica = controller.musicas;
+          final musica = controller.musicas[i];
           final itemIndex = i ~/2;
           return Container(
             padding: EdgeInsets.only(top: 4, bottom: 4),
@@ -306,12 +345,12 @@ class _HomeState extends State<Home> {
                 backgroundColor: Colors.grey[300],
                 radius: 30,
               ),
-              title: Text(musica[itemIndex].nome,
+              title: Text(musica.nome,
                 style: TextStyle(
                   fontFamily: 'Poppins',
                 ),
               ),
-              subtitle: Text(musica[itemIndex].artista,
+              subtitle: Text(musica.artista,
                 style: TextStyle(
                   fontFamily: 'Poppins',
                 ),
