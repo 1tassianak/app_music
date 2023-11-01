@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'editar_usuario.dart';
 import 'favoritos.dart';
+import 'music_player_screen.dart';
 import 'musica.dart';
 
 class Home extends StatefulWidget {
@@ -55,6 +56,7 @@ class _HomeState extends State<Home> {
       final List<dynamic> tracks = data['tracks']['data'];
 
       List<Musica> musicas = tracks.map((track) => Musica(
+        id: int.parse(track['id'].toString()),
         nome: track['title'],
         artista: track['artist']['name'],
       )).toList();
@@ -328,7 +330,7 @@ class _HomeState extends State<Home> {
       ),
       body: ListView.builder(
         padding: EdgeInsets.fromLTRB(0, 8, 0, 8),
-        itemCount: controller.musicas.length *2 -1,
+        itemCount: controller.musicas.isNotEmpty ? controller.musicas.length * 2 - 1 : 0,
         itemBuilder: (context, i){
 
           if(i.isOdd){
@@ -383,9 +385,19 @@ class _HomeState extends State<Home> {
                         ],
                         tileMode: TileMode.mirror,
                       ).createShader(bounds),
-                      child: Icon(
-                        Icons.play_circle,
-                        color: Colors.white,
+                      child: IconButton(
+                        icon: Icon(
+                          Icons.play_circle,
+                          color: Colors.white,
+                        ),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => MusicPlayerScreen(musica: musica),
+                            ),
+                          );
+                        },
                       )
                   ),
                 ],

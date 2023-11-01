@@ -2,7 +2,8 @@ import 'musica.dart';
 
 class MusicaController{
 
-  late List<Musica> musicas;
+  List<Musica> musicas = [];
+ /* late List<Musica> musicas;
 
   MusicaController(){
     musicas=[
@@ -107,6 +108,6 @@ class MusicaController{
       Musica(nome: "Hours and Hours", artista: "Bhaskar"),
       Musica(nome: "Clara", artista: "Fred again"),
     ];
-  }
+  }*/
 
 }
