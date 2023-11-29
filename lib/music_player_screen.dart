@@ -1,59 +1,64 @@
-import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
-
-import 'musica.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 class MusicPlayerScreen extends StatefulWidget {
+  final dynamic musica;
 
-  final Musica musica;
-
-  MusicPlayerScreen({required this.musica, Key? key}) : super(key: key);
-
+  MusicPlayerScreen({required this.musica});
 
   @override
-  State<MusicPlayerScreen> createState() => _MusicPlayerScreenState();
+  _MusicPlayerScreenState createState() => _MusicPlayerScreenState();
 }
 
 class _MusicPlayerScreenState extends State<MusicPlayerScreen> {
 
-  final AudioPlayer audioPlayer = AudioPlayer();
+  AudioPlayer audioPlayer = AudioPlayer();
 
-  Future<void> playMusic() async {
-    String musicaUrl = 'https://deezerdevs-deezer.p.rapidapi.com/track/${widget.musica.id}'; // Use widget.musica.id para obter a ID da música
+  @override
+  void initState() {
+    super.initState();
+    // Reproduza a música quando a tela MusicPlayerScreen é iniciada
+    _playMusic();
+  }
 
-    await audioPlayer.play(UrlSource(musicaUrl));
+  Future<void> _playMusic() async {
+    final String? url = widget.musica['https://open.spotify.com/artist/3t8WiyalpvnB9AObcMufiE'];
+
+    if (url != null) {
+      await audioPlayer.play(UrlSource(url));
+    } else {
+      // Lide com o cenário em que a URL da música está faltando
+      // Exiba uma mensagem de erro, retorne à tela anterior, ou faça qualquer outra ação apropriada.
+    }
   }
 
 
+  @override
+  void dispose() {
+    audioPlayer.stop();
+    audioPlayer.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.musica.nome),
+        title: Text("Now Playing"),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(widget.musica.nome,
-              style: TextStyle(
-                fontFamily: 'Poppins',
-                fontSize: 20,
-                fontWeight: FontWeight.bold
-              ),
+            Text(
+              widget.musica['nome'],
+              style: TextStyle(fontSize: 20),
             ),
-            Text(widget.musica.artista,
-              style: TextStyle(
-                  fontFamily: 'Poppins',
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold
-              ),
+            Text(
+              widget.musica['artista'],
+              style: TextStyle(fontSize: 16),
             ),
-            ElevatedButton(
-              onPressed: playMusic,
-              child: Text('Play'),
-            ),
+            // Adicione controles de reprodução ou informações adicionais da música, conforme necessário
           ],
         ),
       ),

@@ -19,29 +19,58 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  List<dynamic> musicas = [];
 
-  var controller = MusicaController();
+  //var controller = MusicaController();
   String userName = '';
   String userEmail = '';
 
   @override
   void initState() {
     super.initState();
-
+    fetchDataFromSpotify();
     // Carregue as músicas do Deezer ao iniciar a tela Home
-    fetchDeezerMusic().then((musicas) {
+    /*fetchDeezerMusic().then((musicas) {
       setState(() {
         // Atualize o estado com as músicas obtidas da API do Deezer
         controller.musicas = musicas;
       });
-    });
+    });*/
 
     // Atualiza o nome e e-mail do usuário ao iniciar a tela Home
     updateUserDetails();
   }
 
+  Future<void> fetchDataFromSpotify() async {
+    final String url = 'https://spotify23.p.rapidapi.com/tracks/';
+    final Map<String, String> headers = {
+      'X-RapidAPI-Key': '62bafc9fd3msh512fa4a06235479p1f2109jsn501a7d4b1771',
+      'X-RapidAPI-Host': 'spotify23.p.rapidapi.com',
+    };
+    final Map<String, String> params = {
+      'ids': '4WNcduiCmDNfmTEz7JvmLv',
+    };
 
-  Future<List<Musica>> fetchDeezerMusic() async {
+    final Uri uri = Uri.parse(url).replace(queryParameters: params);
+
+    final response = await http.get(uri, headers: headers);
+
+    if (response.statusCode == 200) {
+      final String responseBody = response.body;
+      final parsedResponse = json.decode(responseBody);
+
+      if (parsedResponse.containsKey('tracks')) {
+        setState(() {
+          musicas = parsedResponse['tracks'];
+        });
+      }
+    } else {
+      print('Falha ao fazer a solicitação para o Spotify');
+    }
+  }
+
+
+  /*Future<List<Musica>> fetchDeezerMusic() async {
     final apiKey = '62bafc9fd3msh512fa4a06235479p1f2109jsn501a7d4b1771';
     final response = await http.get(
       Uri.parse('https://deezerdevs-deezer.p.rapidapi.com/playlist/%7Bid%7D'), // Substitua PLAYLIST_ID pelo ID da playlist desejada
@@ -65,7 +94,7 @@ class _HomeState extends State<Home> {
     } else {
       throw Exception('Falha ao carregar músicas do Deezer');
     }
-  }
+  }*/
 
 
   Future<void> updateUserDetails() async {
@@ -330,15 +359,19 @@ class _HomeState extends State<Home> {
       ),
       body: ListView.builder(
         padding: EdgeInsets.fromLTRB(0, 8, 0, 8),
-        itemCount: controller.musicas.isNotEmpty ? controller.musicas.length * 2 - 1 : 0,
+        itemCount: musicas.length,
         itemBuilder: (context, i){
 
           if(i.isOdd){
             return DividerGradient();
           }
 
-          final musica = controller.musicas[i];
-          final itemIndex = i ~/2;
+          final musica = musicas[i];
+          final nome = musica['name'];
+          final album = musica['album']['name'];
+          //final artistas = musica['artists'];
+          final previewUrl = musica['preview_url'];
+
           return Container(
             padding: EdgeInsets.only(top: 4, bottom: 4),
             child: ListTile(
@@ -347,12 +380,12 @@ class _HomeState extends State<Home> {
                 backgroundColor: Colors.grey[300],
                 radius: 30,
               ),
-              title: Text(musica.nome,
+              title: Text(nome,
                 style: TextStyle(
                   fontFamily: 'Poppins',
                 ),
               ),
-              subtitle: Text(musica.artista,
+              subtitle: Text(album,
                 style: TextStyle(
                   fontFamily: 'Poppins',
                 ),
@@ -391,12 +424,15 @@ class _HomeState extends State<Home> {
                           color: Colors.white,
                         ),
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => MusicPlayerScreen(musica: musica),
-                            ),
-                          );
+                          if (previewUrl != null) {
+                            // Navegue para a tela MusicPlayerScreen com a música selecionada
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => MusicPlayerScreen(musica: musica),
+                              ),
+                            );
+                          }
                         },
                       )
                   ),
