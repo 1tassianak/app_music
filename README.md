@@ -15,7 +15,7 @@ O front do aplicativo foi feito a partir de um mockup, escolhido na internet por
 O desafio é desenvolver um app fiel à prototipação e dar continuidade de acordo com seu escopo.
 A ideia é mostrar e ensinar que qualquer pessoa é capaz de desenvolver a partir de qualquer design, o que nos limita é nosso conhecimento.
 
-O escopo é uma aplicação para ouvir música, cujo mockup é de autoria do designer <a href="https://www.petermocanu.com/login-form-ui-design/"  target="_blank"> Peter Mocanu </a>:
+O escopo é uma aplicação para ouvir música, cujo mockup é de autoria do designer <a href="https://github.com/1tassianak/app_music/blob/main/imgs/login-form-UI-mobile-concept-v2.jpg?raw=true"  target="_blank"> Peter Mocanu </a>:
 <h1 align="center">
     <img alt="App Music" title="#AppMusic" src="/imgs/login-form-UI-mobile-concept-v2.jpg" />
 </h1>
